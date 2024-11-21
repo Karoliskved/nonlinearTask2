@@ -25,4 +25,4 @@ def secondDerivative(x, t):
 def f(x, t):
     return derivativeT(x, t)-1j*secondDerivative(x, t)-1j*c*u(x, t)-1j*d*pow(abs(u(x,t)), 2)*u(x, t)
 
-print(f(0.5, 5))
+print(f(0.5, 6))
