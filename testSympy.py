@@ -1,3 +1,4 @@
+import random
 from sympy import sin,  symbols, cos, exp, I, pi, diff, lambdify, conjugate, simplify
 import math
 
@@ -110,3 +111,72 @@ restest2=abs(cPart(0.71, 3, h, tau)+fPart(0.71, 3))
 print(restest2prev/restest2)
 print(restest2prev)
 print(restest2)
+
+
+
+
+
+print("----------test3----------")
+kappa1 = 1
+P=[]
+First=random.random()+random.random()*1j
+P.append(kappa1*First)
+P.append(First)
+for i in range(2, N):
+   P.append( random.random()+random.random()*1j)
+
+P.append(P[N-1])
+print(P)
+
+#calculate Fs
+F=[]
+for i in range(1, N):
+    F.append((-1)*P[i+1]+Cconst(h, tau)*P[i]-P[i-1])
+
+#calculate Alphas
+Alpha=[kappa1]
+for i in range(1, N):
+    Alpha.append(1/(Cconst(h, tau)-Alpha[i-1]))
+
+#calculate Beta's
+
+Beta = [0]
+
+for i in range(1, N):
+    Beta.append((Beta[i-1]+F[i-1])*Alpha[i])
+
+gamma2=0
+
+Yn=(kappa1*Beta[N-1])/(1-kappa1*Alpha[N-1])
+Y=[Alpha[N-1]*Yn+Beta[N-1]]
+for i in range(1, N):
+    Y.append(Alpha[N-(i+1)]*Y[i-1]+Beta[N-(i+1)])
+
+Y.reverse()
+test3Arrray=[]
+max=0
+maxOld=0
+maxi=i
+sum=0
+for i in range (0, N):
+    test3Arrray.append(abs(Y[i]-P[i]))
+    sum+=abs(Y[i]-P[i])
+    if(max<abs(Y[i]-P[i])):
+        maxOld=max
+        max=abs(Y[i]-P[i])
+        maxi=i
+
+
+
+
+print(F)
+print(Alpha)
+print(Beta)
+print(Y)
+print("---------------")
+
+
+print(max)
+print(maxi)
+print(maxOld)
+print(sum/N)
